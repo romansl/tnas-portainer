@@ -1,0 +1,46 @@
+---
+version: "2.1"
+services:
+  resilio-sync:
+    image: lscr.io/linuxserver/resilio-sync:latest
+    container_name: resilio-sync
+    environment:
+      - PUID=0
+      - PGID=0
+      # - TZ=Europe/London
+    volumes:
+      - /Volume2/Sync/config:/config
+      - /Volume2/Sync/downloads:/downloads
+      - /Volume2/Sync/data:/sync
+    ports:
+      - 8888:8888
+      - 55555:55555
+    restart: unless-stopped
+    network_mode: bridge
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=0
+      - PGID=0
+      # - TZ=Europe/London
+      - WEBUI_PORT=8080
+    volumes:
+      - /Volume2/qBittorrent/config:/config
+      - /Volume2/qBittorrent/downloads:/downloads
+      - /Volume2/qBittorrent/torrents:/torrents
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+    network_mode: bridge
+  tailscaled:
+    image: tailscale/tailscale:latest
+    container_name: Tailscale
+    volumes:
+      - /var/lib:/var/lib
+      - /dev/net/tun:/dev/net/tun
+    network_mode: host
+    privileged: true
+    restart: unless-stopped
