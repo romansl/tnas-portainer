@@ -18,16 +18,16 @@ services:
       - db
     image: afian/filerun
     volumes:
-      - ./data:/user-files:rw
+      - /Volume1/aria2:/user-files:rw
     restart: always
   aria2:
     image: wahyd4/aria2-ui:filerun
     links:
       - web:file-manager
     ports:
-      - "8000:80"
+      - "8081:80"
       - "6800:6800"
-      - "443:443"
+      - "8082:443"
     environment:
       - DOMAIN=:80
       # - SSL=true
@@ -39,6 +39,6 @@ services:
     #   - /some_folder:/root/conf/key
     #   - ~/test/aria2.conf:/root/conf/aria2.conf
     volumes:
-      - ./data:/user-files:rw
+      - /Volume1/aria2:/user-files:rw
     restart: always
     
