@@ -41,4 +41,5 @@ services:
     volumes:
       - /Volume1/aria2:/user-files:rw
     restart: always
+    network_mode: bridge
     
